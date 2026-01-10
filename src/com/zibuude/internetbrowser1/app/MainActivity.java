@@ -17,7 +17,7 @@ public class MainActivity extends Activity {
     private ProgressBar progressBar;
     private Button btnBack, btnForward, btnReload, btnTab;
     
-    private String dynamicProxyIp = "192.168.1.23"; 
+    private String dynamicProxyIp = ""; 
 
     private ArrayList tabHtmls = new ArrayList();
     private ArrayList tabUrls = new ArrayList();
