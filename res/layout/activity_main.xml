@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:background="#CCCCCC">
+
+        <EditText
+            android:id="@+id/url_bar"
+            android:layout_width="0dip"
+            android:layout_height="43dip"
+            android:layout_weight="1"
+            android:hint="Search Word or URL"
+            android:singleLine="true"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/go_button"
+            android:layout_width="wrap_content"
+            android:layout_height="43dip"
+            android:text="GO"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progress_horizontal"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="4dip"
+        android:visibility="gone" />
+
+    <WebView
+        android:id="@+id/webview"
+        android:layout_width="fill_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#222222"
+        android:padding="3dip">
+
+        <Button
+            android:id="@+id/back_button"
+            android:layout_width="0dip"
+            android:layout_height="45dip"
+            android:layout_weight="1"
+            android:text="⇐"
+            android:textColor="#FFFFFF"
+            android:background="#222222"
+            android:textSize="24sp" 
+            android:layout_margin="1dip" />
+
+        <Button
+            android:id="@+id/forward_button"
+            android:layout_width="0dip"
+            android:layout_height="45dip"
+            android:layout_weight="1"
+            android:text="⇒"
+            android:textColor="#FFFFFF"
+            android:background="#222222"
+            android:textSize="24sp" 
+            android:layout_margin="1dip" />
+
+        <Button
+            android:id="@+id/reload_button"
+            android:layout_width="0dip"
+            android:layout_height="45dip"
+            android:layout_weight="1"
+            android:text="↻"
+            android:textColor="#FFFFFF"
+            android:background="#222222"
+            android:textSize="24sp" 
+            android:layout_margin="1dip" />
+
+        <Button
+            android:id="@+id/tab_button"
+            android:layout_width="0dip"
+            android:layout_height="45dip"
+            android:layout_weight="1"
+            android:text="≡"
+            android:textColor="#FFFFFF"
+            android:background="#222222"
+            android:textSize="24sp" 
+            android:layout_margin="1dip" />
+    </LinearLayout>
+</LinearLayout>
