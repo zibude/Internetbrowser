@@ -17,17 +17,15 @@ public class MainActivity extends Activity {
     private ProgressBar progressBar;
     private Button btnBack, btnForward, btnReload, btnTab;
     
-    // プロキシIP（メニューから変更可能）
     private String dynamicProxyIp = "192.168.1.23"; 
 
-    // タブ・ブックマーク管理
     private ArrayList tabHtmls = new ArrayList();
     private ArrayList tabUrls = new ArrayList();
     private ArrayList bookmarks = new ArrayList();
     private int currentTabIndex = 0;
     private final int MAX_TABS = 10;
 
-    // メニューID
+
     private static final int MENU_SEARCH = 1;
     private static final int MENU_BOOKMARK = 2;
     private static final int MENU_SETTINGS = 3;
@@ -37,7 +35,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // UI紐付け
+        
         urlBar = (EditText) findViewById(R.id.url_bar);
         webView = (WebView) findViewById(R.id.webview);
         progressBar = (ProgressBar) findViewById(R.id.progress_horizontal);
@@ -46,15 +44,12 @@ public class MainActivity extends Activity {
         btnReload = (Button) findViewById(R.id.reload_button);
         btnTab = (Button) findViewById(R.id.tab_button);
         Button go = (Button) findViewById(R.id.go_button);
-
-        // WebView設定
         WebSettings ws = webView.getSettings();
         ws.setJavaScriptEnabled(true);
         ws.setLoadsImagesAutomatically(true);
         ws.setBuiltInZoomControls(true);
         try { ws.setPluginsEnabled(false); } catch (Exception e) {}
 
-        // リスナー設定
         btnBack.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) { if (webView.canGoBack()) webView.goBack(); }
         });
@@ -74,7 +69,6 @@ public class MainActivity extends Activity {
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                // 【重要】localhostそのものへのリクエスト以外はすべてプロキシへ飛ばす
                 if (url != null && url.startsWith("http") && !url.startsWith("http://localhost")) {
                     executeProxyConnection(url);
                     return true;
@@ -83,13 +77,11 @@ public class MainActivity extends Activity {
             }
         });
 
-        // 初期タブ起動（Bing）
         tabUrls.add("https://www.bing.com");
         tabHtmls.add(""); 
         executeProxyConnection("https://www.bing.com");
     }
 
-    // --- メニュー機能 ---
     @Override
     public boolean onCreateOptionsMenu(android.view.Menu menu) {
         menu.add(0, MENU_SEARCH, 0, "Find in Page");
@@ -108,12 +100,11 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    // --- ダイアログ類 ---
     private void showTabDialog() {
         int tabCount = tabUrls.size();
         final String[] items = new String[tabCount + (tabCount < MAX_TABS ? 1 : 0)];
         for (int i = 0; i < tabCount; i++) {
-            items[i] = (i == currentTabIndex ? "★ " : "") + "Tab " + (i + 1) + ": " + tabUrls.get(i);
+            items[i] = (i == currentTabIndex ? "笘� " : "") + "Tab " + (i + 1) + ": " + tabUrls.get(i);
         }
         if (tabCount < MAX_TABS) items[items.length - 1] = "[+] New Tab";
 
@@ -173,18 +164,14 @@ public class MainActivity extends Activity {
         }).show();
     }
 
-    // --- HTML読み込みの共通処理 ---
     private void loadHtmlWithProxyBase(String html, String originalUrl) {
-        // 【重要】BaseURLをプロキシサーバーのURLに設定することで、内部リンクの迷子を防ぐ
         String proxyBase = "http://" + dynamicProxyIp + ":8000/";
         webView.loadDataWithBaseURL(proxyBase, html, "text/html", "utf-8", originalUrl);
     }
 
-    // --- 通信ロジック ---
     private void executeProxyConnection(final String targetUrl) {
         if (targetUrl == null || targetUrl.length() == 0 || targetUrl.equals("about:blank")) return;
 
-        // すでにプロキシ経由のURLやlocalhostならそのまま
         String processedUrl = targetUrl;
         if (!targetUrl.startsWith("http://" + dynamicProxyIp) && !targetUrl.startsWith("http://localhost")) {
             if (!targetUrl.startsWith("http://") && !targetUrl.startsWith("https://")) {
@@ -226,7 +213,6 @@ public class MainActivity extends Activity {
                             progressBar.setVisibility(View.GONE);
                             
                             String displayUrl = finalTarget;
-                            // 表示用URLからプロキシ部分を削る
                             if (displayUrl.startsWith("http://" + dynamicProxyIp + ":8000/")) {
                                 displayUrl = displayUrl.substring(("http://" + dynamicProxyIp + ":8000/").length());
                             }
