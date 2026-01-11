@@ -1,3 +1,4 @@
+![2639](https://github.com/user-attachments/assets/6416ab56-72a7-4bcd-90a8-06286387375a)
 # Internetbrowser
 This repository allows you to view the latest websites to some extent on devices that do not support TLS, such as the HTC Magic.
 
