@@ -18,7 +18,7 @@ public class MainActivity extends Activity {
     private Button btnBack, btnForward, btnReload, btnTab;
     
     // ProxyIP (Can be changed from the menu)
-    private String dynamicProxyIp = "192.168.1.23"; 
+    private String dynamicProxyIp = ""; 
 
     // Tab and bookmark management
     private ArrayList tabHtmls = new ArrayList();
