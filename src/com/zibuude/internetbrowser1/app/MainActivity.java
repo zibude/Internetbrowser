@@ -1,4 +1,4 @@
-package com.zibuude.internetbrowser1;
+package com.zibude.Internetbrowser;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -17,15 +17,17 @@ public class MainActivity extends Activity {
     private ProgressBar progressBar;
     private Button btnBack, btnForward, btnReload, btnTab;
     
-    private String dynamicProxyIp = ""; 
+    // ProxyIP (Can be changed from the menu)
+    private String dynamicProxyIp = "192.168.1.23"; 
 
+    // Tab and bookmark management
     private ArrayList tabHtmls = new ArrayList();
     private ArrayList tabUrls = new ArrayList();
     private ArrayList bookmarks = new ArrayList();
     private int currentTabIndex = 0;
     private final int MAX_TABS = 10;
 
-
+    // menuID
     private static final int MENU_SEARCH = 1;
     private static final int MENU_BOOKMARK = 2;
     private static final int MENU_SETTINGS = 3;
@@ -35,7 +37,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        
+        // UI
         urlBar = (EditText) findViewById(R.id.url_bar);
         webView = (WebView) findViewById(R.id.webview);
         progressBar = (ProgressBar) findViewById(R.id.progress_horizontal);
@@ -44,12 +46,15 @@ public class MainActivity extends Activity {
         btnReload = (Button) findViewById(R.id.reload_button);
         btnTab = (Button) findViewById(R.id.tab_button);
         Button go = (Button) findViewById(R.id.go_button);
+
+        // WebViewsettings
         WebSettings ws = webView.getSettings();
         ws.setJavaScriptEnabled(true);
         ws.setLoadsImagesAutomatically(true);
         ws.setBuiltInZoomControls(true);
         try { ws.setPluginsEnabled(false); } catch (Exception e) {}
 
+        // Listener settings
         btnBack.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) { if (webView.canGoBack()) webView.goBack(); }
         });
@@ -69,6 +74,7 @@ public class MainActivity extends Activity {
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                // [Important] Send all requests to the proxy except for requests to localhost itself
                 if (url != null && url.startsWith("http") && !url.startsWith("http://localhost")) {
                     executeProxyConnection(url);
                     return true;
@@ -77,11 +83,13 @@ public class MainActivity extends Activity {
             }
         });
 
+        // Initial tab function（Bing）
         tabUrls.add("https://www.bing.com");
         tabHtmls.add(""); 
         executeProxyConnection("https://www.bing.com");
     }
 
+    // --- menubuttom ---
     @Override
     public boolean onCreateOptionsMenu(android.view.Menu menu) {
         menu.add(0, MENU_SEARCH, 0, "Find in Page");
@@ -100,6 +108,7 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    // --- dialog ---
     private void showTabDialog() {
         int tabCount = tabUrls.size();
         final String[] items = new String[tabCount + (tabCount < MAX_TABS ? 1 : 0)];
@@ -226,11 +235,10 @@ public class MainActivity extends Activity {
                         }
                     });
                 } catch (final Exception e) {
-                    final String msg = e.getMessage();
                     runOnUiThread(new Runnable() {
                         public void run() { 
                             progressBar.setVisibility(View.GONE);
-                            Toast.makeText(MainActivity.this, "Error: " + msg, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
