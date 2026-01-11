@@ -41,7 +41,7 @@ class SimpleProxy(http.server.BaseHTTPRequestHandler):
                 self.end_headers()
                 
                 if "text/html" in content_type:
-                    html = body.decode('utf-8', errors='ignore'
+                    html = body.decode('utf-8', errors='ignore'）
                     html = re.sub(r'src="//', 'src="https://', html)
                     
                     html = re.sub(r'(src|href)="https?://', rf'\1="http://{proxy_host}/https://', html)
